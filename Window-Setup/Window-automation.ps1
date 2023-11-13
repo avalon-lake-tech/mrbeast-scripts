@@ -1,6 +1,6 @@
 <#
-Script Name: PowerShell Script
-Author: Your Name
+Script Name: Window Automation 
+Author: Jason Dallas
 Date of latest revision: 11/13/2023
 Purpose: Perform basic tasks
 #>
