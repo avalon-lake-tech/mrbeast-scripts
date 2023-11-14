@@ -21,50 +21,13 @@ Add-LocalGroupMember -Group "Users" -Member $username
 
 Write-Host "User $username created successfully. Password change is required at the next login."
 
-# Simulated user database (not suitable for production)
-$users = @{}
+# Prompt the user for their username
+$username = Read-Host "Enter the username"
 
-function Register-User {
-    param($username, $password)
-    if (-not $users.ContainsKey($username)) {
-        $users[$username] = @{ Password = $password; ChangePassword = $true }
-        "User '$username' registered successfully."
-    } else {
-        "Username '$username' is already taken."
-    }
-}
+# Force the user to change their password on next login
+net user $username /logonpasswordchg:yes
 
-function Login {
-    param($username, $password)
-    if ($users.ContainsKey($username)) {
-        $storedPassword = $users[$username].Password
-        if ($password -eq $storedPassword) {
-            if ($users[$username].ChangePassword) {
-                "Please change your password on next login."
-                Change-Password -Username $username
-            } else {
-                "Login successful."
-            }
-        } else {
-            "Incorrect password for '$username'."
-        }
-    } else {
-        "User '$username' not found."
-    }
-}
-
-function Change-Password {
-    param($username)
-    $newPassword = Read-Host "Enter your new password"
-    $users[$username].Password = $newPassword
-    $users[$username].ChangePassword = $false
-    "Password changed successfully."
-}
-
-
-
-
-
+Write-Host "User '$username' will be prompted to change their password on the next login."
 # Adds App Shortcuts
 # Define download URLs for the applications
 $chromeUrl = "https://dl.google.com/chrome/install/GoogleChromeStandaloneEnterprise64.msi"
