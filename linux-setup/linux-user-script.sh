@@ -24,13 +24,10 @@ xdg-settings set default-web-browser google-chrome.desktop
 # Configure the dock for the new user
 gsettings set org.gnome.shell favorite-apps "['google-chrome.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'yelp.desktop', 'org.gnome.Nautilus.desktop trash:///']"
 
-EOL
 # Prompt for password change and display a welcome message
-#zenity --info --text="Welcome to your new account! Please change your password."
-#passwd
-
-#Temporary changing this command in the first-login script to teset just the gsettings command.
-#DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri "file:///home/$username/background.jpg" 
+zenity --info --text="Welcome to your new account! We will now launch a window to change your password."
+passwd
+EOL
 
 
 chmod +x /home/$username/first-login.sh
