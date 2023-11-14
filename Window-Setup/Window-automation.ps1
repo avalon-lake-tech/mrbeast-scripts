@@ -16,7 +16,7 @@ $securePassword = ConvertTo-SecureString -String $password -AsPlainText -Force
 New-LocalUser -Name $username -Password $securePassword -PasswordNeverExpires:$true -UserMayNotChangePassword:$false
 
 # Force password change on next login
-Set-LocalUser -Name $username -PasswordExpired
+Set-LocalUser -Name $username -ChangePasswordAtLogon $true
 
 Write-Host "User account '$username' created with password change on next login."
 
