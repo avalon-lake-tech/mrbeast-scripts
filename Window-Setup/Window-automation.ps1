@@ -10,7 +10,7 @@ $userName = "User"
 # Check if the user already exists
 if (-not (Get-LocalUser -Name $userName -ErrorAction SilentlyContinue)) {
     # Create the user account
-    New-LocalUser -Name $userName -Password (ConvertTo-SecureString -AsPlainText "Password" -Force) -UserMayNotChangePassword
+    New-LocalUser -Name $userName -Password (ConvertTo-SecureString -AsPlainText Password -Force) -UserMayNotChangePassword
 
     # Add the user to the Users group
     Add-LocalGroupMember -Group "Users" -Member $userName
