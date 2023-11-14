@@ -14,43 +14,57 @@ Set-LocalUser -Name $username -PasswordChangeableDate (Get-Date).AddMinutes(-5)
 
 # Adds App Shortcuts
 $apps = @{
-    'Slack'        = 'C:\Users\YourUsername\AppData\Local\slack\slack.exe'
-    'Google Chrome' = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
-    'Zoom'         = 'C:\Users\YourUsername\AppData\Roaming\Zoom\bin\Zoom.exe'
-    'LibreOffice'  = 'C:\Program Files\LibreOffice\program\soffice.exe'
-    'Thunderbird'  = 'C:\Program Files\Mozilla Thunderbird\thunderbird.exe'
+    'Slack'        = 'https://downloads.slack-edge.com/releases/win64/4.25.0/Slack-Setup.exe'
+    'Google Chrome' = 'https://dl.google.com/chrome/install/GoogleChromeStandaloneEnterprise64.msi'
+    'Zoom'         = 'https://zoom.us/client/latest/ZoomInstallerFull.msi'
+    'LibreOffice'  = 'https://download.documentfoundation.org/libreoffice/stable/7.2.2/win/x86_64/LibreOffice_7.2.2_Win_x64.msi'
+    'Thunderbird'  = 'https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/91.4.0/win64/en-US/Thunderbird%20Setup%2091.4.0.exe'
 }
+
+$downloadPath = "$env:TEMP\Downloads"
 $desktopPath = [System.Environment]::GetFolderPath('Desktop')
-$apps.GetEnumerator() | ForEach-Object {
-    $shortcut = (New-Object -ComObject WScript.Shell).CreateShortcut("$desktopPath\$($_.Key).lnk")
-    $shortcut.TargetPath = $_.Value
-    $shortcut.Save()
+
+# Create the Downloads directory if it doesn't exist
+if (-not (Test-Path -Path $downloadPath -PathType Container)) {
+    New-Item -Path $downloadPath -ItemType Directory
+}
+
+foreach ($app in $apps.GetEnumerator()) {
+    $appName = $app.Key
+    $appUrl = $app.Value
+    $appInstaller = Join-Path $downloadPath "$appName.Installer"
+
+    Invoke-WebRequest -Uri $appUrl -OutFile $appInstaller
+    Start-Process -FilePath $appInstaller -Wait -Force
+
+    (New-Object -ComObject WScript.Shell).CreateShortcut("$desktopPath\$appName.lnk").TargetPath = $appInstaller
+    Remove-Item -Path $appInstaller -Force
+}
+
+Write-Host "Installation and shortcut creation completed."
 }
 
 # Changes background to Company Logo
-$ImageUrl = "https://github.com/avalon-lake-tech/mrbeast-scripts/raw/main/avalonlake-desktop.png"
-$ImagePath = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "avalonlake-desktop.png")
-Invoke-WebRequest -Uri $ImageUrl -OutFile $ImagePath
-[System.Windows.Forms.SystemInformation]::SetWallpaper($ImagePath)
+# URL of the image
+$imageUrl = "https://raw.githubusercontent.com/avalon-lake-tech/mrbeast-scripts/main/avalonlake-desktop.png"
 
-# Set Password Restriction 
-Function Validate-Password {
-    param(
-        [string]$Password
-    )
+# Path to save the image
+$imagePath = "$env:TEMP\avalonlake-desktop.png"
 
-    if ($Password.Length -lt 8 -or -not $Password -cmatch "[A-Z]" -or -not $Password -cmatch "[!@#\$%^&*()]") {
-        Write-Host "Invalid password. It must be at least 8 characters long, contain an uppercase letter, and a special symbol."
-        return $false
+# Download the image
+Invoke-WebRequest -Uri $imageUrl -OutFile $imagePath
+
+# Set the image as the desktop background
+Add-Type -TypeDefinition @"
+    using System;
+    using System.Runtime.InteropServices;
+    public class Wallpaper {
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
     }
+"@
 
-    return $true
-}
+[Wallpaper]::SystemParametersInfo(20, 0, $imagePath, 3)
 
-# Password Validation
-$Password = Read-Host "Enter a password"
-if (Validate-Password -Password $Password) {
-    Write-Host "Password is valid."
-} else {
-    Write-Host "Password is not valid."
-}
+# Clean up: Remove the downloaded image
+Remove-Item $imagePath
