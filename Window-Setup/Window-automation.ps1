@@ -21,6 +21,16 @@ Add-LocalGroupMember -Group "Users" -Member $username
 
 Write-Host "User $username created successfully. Password change is required at the next login."
 
+# Get the username of the current user
+$currentUsername = $env:User
+
+# Force the user to change their password at the next logon
+Set-LocalUser -Name $currentUsername -ChangePasswordAtLogon $true
+
+# Display a message to the user
+Write-Host "Please change your password at the next logon."
+
+
 
 # Adds App Shortcuts
 # Define download URLs for the applications
