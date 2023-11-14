@@ -5,9 +5,9 @@ Date of latest revision: 11/13/2023
 Purpose: Perform basic tasks
 #>
 
- Define the username and password
+ # Define the username and password
 $username = "User"
-$password = "Password"
+$password = "YourNewPassword"
 
 # Convert the password to a secure string
 $securePassword = ConvertTo-SecureString -String $password -AsPlainText -Force
@@ -19,6 +19,7 @@ New-LocalUser -Name $username -Password $securePassword -PasswordNeverExpires:$t
 Set-LocalUser -Name $username -PasswordExpired
 
 Write-Host "User account '$username' created with password change on next login."
+
 
 # Adds App Shortcuts
 # Define download URLs for the applications
