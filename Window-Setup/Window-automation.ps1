@@ -9,10 +9,10 @@ $userName = "User"
 $password = "Password"
 
 # Create a new user account
-New-LocalUser -Name $userName -Password (ConvertTo-SecureString -String $password -AsPlainText -Force) -Description "Sample User Account" -UserMayNotChangePassword
+New-LocalUser -Name $userName -Password (ConvertTo-SecureString -String $password -AsPlainText -Force) -Description "Sample User Account"
 
-# Allow the user to change the password on next login
-Set-LocalUser -Name $userName -UserMayChangePassword $true
+# Force the user to change the password at the next login
+net user $userName /logonpasswordchg:yes
 
 # Adds App Shortcuts
 # Define download URLs for the applications
