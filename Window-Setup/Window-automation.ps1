@@ -28,6 +28,7 @@ $username = Read-Host "Enter the username"
 net user $username /logonpasswordchg:yes
 
 Write-Host "User '$username' will be prompted to change their password on the next login."
+
 # Adds App Shortcuts
 # Define download URLs for the applications
 $chromeUrl = "https://dl.google.com/chrome/install/GoogleChromeStandaloneEnterprise64.msi"
