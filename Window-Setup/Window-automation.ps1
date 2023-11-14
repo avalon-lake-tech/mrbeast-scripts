@@ -19,13 +19,11 @@ net user $username /logonpasswordchg:yes
 # Optional: Add the user to the Users group
 Add-LocalGroupMember -Group "Users" -Member $username
 
-Write-Host "User $username created successfully. Password change is required at the next login."
-
 # Prompt the user for their username
-$username = Read-Host "User"
+$username = Read-Host "Enter the username"
 
-# Force the user to change their password on next login
-net user $username /logonpasswordchg:yes
+# Force the user to change their password
+Set-LocalUser -Name $username -PasswordExpired -Confirm:$false
 
 Write-Host "User '$username' will be prompted to change their password on the next login."
 
