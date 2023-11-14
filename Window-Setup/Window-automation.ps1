@@ -27,7 +27,7 @@ Write-Host "User $username created successfully. Password change is required at 
 $chromeUrl = "https://dl.google.com/chrome/install/GoogleChromeStandaloneEnterprise64.msi"
 $zoomUrl = "https://zoom.us/client/latest/ZoomInstallerFull.msi"
 $slackUrl = "https://downloads.slack-edge.com/releases/win64/slackSetup.exe"
-$thunderbirdUrl = "https://download.mozilla.org/?product=thunderbird-91.7.0-SSL&os=win64&lang=en-US"
+$thunderbirdUrl = "https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/91.7.0/win64/en-US/Thunderbird%20Setup%2091.7.0.exe"
 
 # Define installation paths
 $installPath = "$env:ProgramFiles\"
