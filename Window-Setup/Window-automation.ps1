@@ -21,14 +21,18 @@ Add-LocalGroupMember -Group "Users" -Member $username
 
 Write-Host "User $username created successfully. Password change is required at the next login."
 
-# Get the username of the current user
-$currentUsername = $env:User
+# Specify the username for which you want to force a password change
+$username = "User"
+
+# Get the user object
+$user = Get-LocalUser -Name $username
 
 # Force the user to change their password at the next logon
-Set-LocalUser -Name $currentUsername -ChangePasswordAtLogon $true
+Set-LocalUser -Name $username -ChangePasswordAtLogon $true
 
-# Display a message to the user
-Write-Host "Please change your password at the next logon."
+# Display a message to inform about the password change requirement
+Write-Host "The user '$username' is now required to change the password at the next logon."
+
 
 
 
