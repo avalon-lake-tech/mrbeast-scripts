@@ -26,7 +26,6 @@ Write-Host "User $username created successfully. Password change is required at 
 # Define download URLs for the applications
 $chromeUrl = "https://dl.google.com/chrome/install/GoogleChromeStandaloneEnterprise64.msi"
 $zoomUrl = "https://zoom.us/client/latest/ZoomInstallerFull.msi"
-$slackUrl = "https://slack.com/downloads/instructions/windows"
 $thunderbirdUrl = "https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/91.7.0/win64/en-US/Thunderbird%20Setup%2091.7.0.exe"
 
 # Define installation paths
@@ -53,24 +52,36 @@ function Install-Application {
     Remove-Item -Path $installerPath -Force
 }
 
+# Function to remove application
+function Remove-Application {
+    param(
+        [string]$appName
+    )
+
+    # Remove the application if it exists
+    $appPath = Join-Path $installPath $appName
+    if (Test-Path $appPath) {
+        Remove-Item -Path $appPath -Recurse -Force
+    }
+}
+
 # Install Google Chrome
 Install-Application -url $chromeUrl -installPath $installPath
 
 # Install Zoom
 Install-Application -url $zoomUrl -installPath $installPath
 
-# Install Slack
-Install-Application -url $slackUrl -installPath $installPath
-
 # Install Thunderbird
 Install-Application -url $thunderbirdUrl -installPath $installPath
+
+# Remove Slack
+Remove-Application -appName "Slack"
 
 # Create desktop shortcuts
 $WshShell = New-Object -ComObject WScript.Shell
 
 $WshShell.CreateShortcut("$desktopPath\Google Chrome.lnk").TargetPath = "$installPath\Google\Chrome\Application\chrome.exe"
 $WshShell.CreateShortcut("$desktopPath\Zoom.lnk").TargetPath = "$installPath\Zoom\Zoom.exe"
-$WshShell.CreateShortcut("$desktopPath\Slack.lnk").TargetPath = "$installPath\Slack\slack.exe"
 $WshShell.CreateShortcut("$desktopPath\Thunderbird.lnk").TargetPath = "$installPath\Mozilla Thunderbird\thunderbird.exe"
 
 # Changes background to Company Logo
