@@ -4,24 +4,15 @@ Author: Jason Dallas
 Date of latest revision: 11/13/2023
 Purpose: Perform basic tasks
 #>
-# Define the username
+# Define the username and password
 $userName = "User"
+$password = "Password"
 
-# Check if the user already exists
-if (-not (Get-LocalUser -Name $userName -ErrorAction SilentlyContinue)) {
-    # Create the user account
-    New-LocalUser -Name $userName -Password (ConvertTo-SecureString -AsPlainText Password -Force) -UserMayNotChangePassword
+# Create a new user account
+New-LocalUser -Name $userName -Password (ConvertTo-SecureString -String $password -AsPlainText -Force) -Description "Sample User Account" -UserMayNotChangePassword
 
-    # Add the user to the Users group
-    Add-LocalGroupMember -Group "Users" -Member $userName
-
-    # Set the flag to force the user to change password at next login
-    Set-LocalUser -Name $userName -UserMustChangePassword $true
-
-    Write-Host "User account '$userName' created successfully."
-} else {
-    Write-Host "User account '$userName' already exists."
-}
+# Allow the user to change the password on next login
+Set-LocalUser -Name $userName -UserMayChangePassword $true
 
 # Adds App Shortcuts
 # Define download URLs for the applications
