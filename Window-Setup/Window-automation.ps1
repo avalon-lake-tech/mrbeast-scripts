@@ -23,6 +23,7 @@ Write-Host "User $username created successfully. Password change is required at 
 
 
 # Adds App Shortcuts
+# Define the list of applications and their download links
 $apps = @{
     'Slack'        = 'https://downloads.slack-edge.com/releases/win64/4.25.0/Slack-Setup.exe'
     'Google Chrome' = 'https://dl.google.com/chrome/install/GoogleChromeStandaloneEnterprise64.msi'
@@ -31,27 +32,31 @@ $apps = @{
     'Thunderbird'  = 'https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/91.4.0/win64/en-US/Thunderbird%20Setup%2091.4.0.exe'
 }
 
-$downloadPath = "$env:TEMP\Downloads"
+# Set the path to the desktop
 $desktopPath = [System.Environment]::GetFolderPath('Desktop')
 
-# Create the Downloads directory if it doesn't exist
-if (-not (Test-Path -Path $downloadPath -PathType Container)) {
-    New-Item -Path $downloadPath -ItemType Directory
+# Create a folder for the downloads on the desktop
+$downloadFolderPath = Join-Path -Path $desktopPath -ChildPath 'AppDownloads'
+New-Item -ItemType Directory -Force -Path $downloadFolderPath
+
+# Download and install each application
+foreach ($appName in $apps.Keys) {
+    $appDownloadLink = $apps[$appName]
+    $appInstallerPath = Join-Path -Path $downloadFolderPath -ChildPath "$appName Installer"
+
+    # Download the application installer
+    Invoke-WebRequest -Uri $appDownloadLink -OutFile $appInstallerPath
+
+    # Install the application silently (assuming they support silent installation)
+    Start-Process -FilePath $appInstallerPath -ArgumentList '/quiet', '/norestart' -Wait
+
+    # Create a shortcut on the desktop
+    $shortcutPath = Join-Path -Path $desktopPath -ChildPath "$appName.lnk"
+    $WshShell = New-Object -ComObject WScript.Shell
+    $Shortcut = $WshShell.CreateShortcut($shortcutPath)
+    $Shortcut.TargetPath = $appInstallerPath
+    $Shortcut.Save()
 }
-
-foreach ($app in $apps.GetEnumerator()) {
-    $appName = $app.Key
-    $appUrl = $app.Value
-    $appInstaller = Join-Path $downloadPath "$appName.Installer"
-
-    Invoke-WebRequest -Uri $appUrl -OutFile $appInstaller
-    Start-Process -FilePath $appInstaller -Wait -Force
-
-    (New-Object -ComObject WScript.Shell).CreateShortcut("$desktopPath\$appName.lnk").TargetPath = $appInstaller
-    Remove-Item -Path $appInstaller -Force
-}
-
-Write-Host "Installation and shortcut creation completed."
 
 # Changes background to Company Logo
 # URL of the image
