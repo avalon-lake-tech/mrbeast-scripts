@@ -14,6 +14,33 @@ New-LocalUser -Name $userName -Password (ConvertTo-SecureString -String $passwor
 # Force the user to change the password at the next login
 net user $userName /logonpasswordchg:yes
 
+
+# Changes background to Company Logo
+# URL of the image
+$imageUrl = "https://raw.githubusercontent.com/avalon-lake-tech/mrbeast-scripts/main/avalonlake-desktop.png"
+
+# Path to save the image
+$imagePath = "$env:TEMP\avalonlake-desktop.png"
+
+# Download the image
+Invoke-WebRequest -Uri $imageUrl -OutFile $imagePath
+
+# Set the image as the desktop background
+Add-Type -TypeDefinition @"
+    using System;
+    using System.Runtime.InteropServices;
+    public class Wallpaper {
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
+    }
+"@
+
+[Wallpaper]::SystemParametersInfo(20, 0, $imagePath, 3)
+
+# Clean up: Remove the downloaded image
+Remove-Item $imagePath
+
+
 # Adds App Shortcuts
 # Define download URLs for the applications
 $chromeUrl = "https://dl.google.com/chrome/install/GoogleChromeStandaloneEnterprise64.msi"
@@ -75,28 +102,3 @@ $WshShell = New-Object -ComObject WScript.Shell
 $WshShell.CreateShortcut("$desktopPath\Google Chrome.lnk").TargetPath = "$installPath\Google\Chrome\Application\chrome.exe"
 $WshShell.CreateShortcut("$desktopPath\Zoom.lnk").TargetPath = "$installPath\Zoom\Zoom.exe"
 $WshShell.CreateShortcut("$desktopPath\Thunderbird.lnk").TargetPath = "$installPath\Mozilla Thunderbird\thunderbird.exe"
-
-# Changes background to Company Logo
-# URL of the image
-$imageUrl = "https://raw.githubusercontent.com/avalon-lake-tech/mrbeast-scripts/main/avalonlake-desktop.png"
-
-# Path to save the image
-$imagePath = "$env:TEMP\avalonlake-desktop.png"
-
-# Download the image
-Invoke-WebRequest -Uri $imageUrl -OutFile $imagePath
-
-# Set the image as the desktop background
-Add-Type -TypeDefinition @"
-    using System;
-    using System.Runtime.InteropServices;
-    public class Wallpaper {
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
-    }
-"@
-
-[Wallpaper]::SystemParametersInfo(20, 0, $imagePath, 3)
-
-# Clean up: Remove the downloaded image
-Remove-Item $imagePath
