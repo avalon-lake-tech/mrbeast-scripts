@@ -16,7 +16,7 @@ wget $bg_url -O /home/$username/background.jpg
 cat > /home/$username/first-login.sh <<EOL
 #!/bin/bash
 # Set the background in GNOME for the new user
-DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri "file:///home/$username/background.jpg"
+gsettings set org.gnome.desktop.background picture-uri "file:///home/$username/background.jpg"
 
 # Set Chrome as the default browser for the new user
 xdg-settings set default-web-browser google-chrome.desktop
@@ -28,6 +28,10 @@ EOL
 # Prompt for password change and display a welcome message
 #zenity --info --text="Welcome to your new account! Please change your password."
 #passwd
+
+#Temporary changing this command in the first-login script to teset just the gsettings command.
+#DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri "file:///home/$username/background.jpg" 
+
 
 chmod +x /home/$username/first-login.sh
 echo "/home/$username/first-login.sh" >> /home/$username/.profile
