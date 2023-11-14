@@ -22,7 +22,7 @@ Add-LocalGroupMember -Group "Users" -Member $username
 Write-Host "User $username created successfully. Password change is required at the next login."
 
 # Prompt the user for their username
-$username = Read-Host "Enter the username"
+$username = Read-Host "User"
 
 # Force the user to change their password on next login
 net user $username /logonpasswordchg:yes
