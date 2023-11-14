@@ -23,40 +23,55 @@ Write-Host "User $username created successfully. Password change is required at 
 
 
 # Adds App Shortcuts
-# Define the list of applications and their download links
-$apps = @{
-    'Slack'        = 'https://downloads.slack-edge.com/releases/win64/4.25.0/Slack-Setup.exe'
-    'Google Chrome' = 'https://dl.google.com/chrome/install/GoogleChromeStandaloneEnterprise64.msi'
-    'Zoom'         = 'https://zoom.us/client/latest/ZoomInstallerFull.msi'
-    'LibreOffice'  = 'https://download.documentfoundation.org/libreoffice/stable/7.2.2/win/x86_64/LibreOffice_7.2.2_Win_x64.msi'
-    'Thunderbird'  = 'https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/91.4.0/win64/en-US/Thunderbird%20Setup%2091.4.0.exe'
+# Define download URLs for the applications
+$chromeUrl = "https://dl.google.com/chrome/install/GoogleChromeStandaloneEnterprise64.msi"
+$zoomUrl = "https://zoom.us/client/latest/ZoomInstallerFull.msi"
+$slackUrl = "https://downloads.slack-edge.com/releases/win64/slackSetup.exe"
+$thunderbirdUrl = "https://download.mozilla.org/?product=thunderbird-91.7.0-SSL&os=win64&lang=en-US"
+
+# Define installation paths
+$installPath = "$env:ProgramFiles\"
+
+# Define desktop shortcut paths
+$desktopPath = [System.IO.Path]::Combine([System.Environment]::GetFolderPath('Desktop'))
+
+# Function to install application
+function Install-Application {
+    param(
+        [string]$url,
+        [string]$installPath
+    )
+
+    # Download the installer
+    $installerPath = Join-Path $installPath (Split-Path $url -Leaf)
+    Invoke-WebRequest -Uri $url -OutFile $installerPath
+
+    # Install the application
+    Start-Process -FilePath $installerPath -Wait
+
+    # Remove the installer (optional)
+    Remove-Item -Path $installerPath -Force
 }
 
-# Set the path to the desktop
-$desktopPath = [System.Environment]::GetFolderPath('Desktop')
+# Install Google Chrome
+Install-Application -url $chromeUrl -installPath $installPath
 
-# Create a folder for the downloads on the desktop
-$downloadFolderPath = Join-Path -Path $desktopPath -ChildPath 'AppDownloads'
-New-Item -ItemType Directory -Force -Path $downloadFolderPath
+# Install Zoom
+Install-Application -url $zoomUrl -installPath $installPath
 
-# Download and install each application
-foreach ($appName in $apps.Keys) {
-    $appDownloadLink = $apps[$appName]
-    $appInstallerPath = Join-Path -Path $downloadFolderPath -ChildPath "$appName Installer"
+# Install Slack
+Install-Application -url $slackUrl -installPath $installPath
 
-    # Download the application installer
-    Invoke-WebRequest -Uri $appDownloadLink -OutFile $appInstallerPath
+# Install Thunderbird
+Install-Application -url $thunderbirdUrl -installPath $installPath
 
-    # Install the application silently (assuming they support silent installation)
-    Start-Process -FilePath $appInstallerPath -ArgumentList '/quiet', '/norestart' -Wait
+# Create desktop shortcuts
+$WshShell = New-Object -ComObject WScript.Shell
 
-    # Create a shortcut on the desktop
-    $shortcutPath = Join-Path -Path $desktopPath -ChildPath "$appName.lnk"
-    $WshShell = New-Object -ComObject WScript.Shell
-    $Shortcut = $WshShell.CreateShortcut($shortcutPath)
-    $Shortcut.TargetPath = $appInstallerPath
-    $Shortcut.Save()
-}
+$WshShell.CreateShortcut("$desktopPath\Google Chrome.lnk").TargetPath = "$installPath\Google\Chrome\Application\chrome.exe"
+$WshShell.CreateShortcut("$desktopPath\Zoom.lnk").TargetPath = "$installPath\Zoom\Zoom.exe"
+$WshShell.CreateShortcut("$desktopPath\Slack.lnk").TargetPath = "$installPath\Slack\slack.exe"
+$WshShell.CreateShortcut("$desktopPath\Thunderbird.lnk").TargetPath = "$installPath\Mozilla Thunderbird\thunderbird.exe"
 
 # Changes background to Company Logo
 # URL of the image
