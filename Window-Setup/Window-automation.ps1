@@ -42,7 +42,6 @@ foreach ($app in $apps.GetEnumerator()) {
 }
 
 Write-Host "Installation and shortcut creation completed."
-}
 
 # Changes background to Company Logo
 # URL of the image
