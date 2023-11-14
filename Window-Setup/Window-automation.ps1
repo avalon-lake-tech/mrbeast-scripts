@@ -6,11 +6,21 @@ Purpose: Perform basic tasks
 #>
 
 # User Generates User Account
+# Define the username and password for the new user
 $username = "User"
-$password = "YourStrongPassword"
-$securePassword = ConvertTo-SecureString $password -AsPlainText -Force
-New-LocalUser -Name $username -Password $securePassword -PasswordNeverExpires $false -UserMayNotChangePassword $false -AccountNeverExpires $false
-Set-LocalUser -Name $username -PasswordChangeableDate (Get-Date).AddMinutes(-5)
+$password = ConvertTo-SecureString "Password" -AsPlainText -Force
+
+# Create a new local user without admin privileges
+New-LocalUser -Name $username -Password $password -UserMayNotChangePassword -PasswordNeverExpires
+
+# Set the PasswordExpired attribute to enforce password change after login
+net user $username /logonpasswordchg:yes
+
+# Optional: Add the user to the Users group
+Add-LocalGroupMember -Group "Users" -Member $username
+
+Write-Host "User $username created successfully. Password change is required at the next login."
+
 
 # Adds App Shortcuts
 $apps = @{
