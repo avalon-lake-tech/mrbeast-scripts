@@ -8,3 +8,5 @@ wget https://raw.githubusercontent.com/avalon-lake-tech/mrbeast-scripts/main/lin
 
 #Install Veeam
 sudo apt install ./veeam*
+sudo apt install blksnap -y
+sudo apt install veeam -y
