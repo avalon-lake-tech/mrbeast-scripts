@@ -11,6 +11,9 @@ $password = "Password"
 # Create a new user account
 New-LocalUser -Name $userName -Password (ConvertTo-SecureString -String $password -AsPlainText -Force) -Description "Sample User Account"
 
+# Add the user to the "Users" group
+Add-LocalGroupMember -Group "Users" -Member $userName
+
 # Force the user to change the password at the next login
 net user $userName /logonpasswordchg:yes
 
