@@ -112,8 +112,6 @@ Install-Application -url $sshfsWinUrl -installPath $installPath
 # Install SSHFS-Win-Manager
 Install-Application -url $sshfsWinManagerUrl -installPath $installPath
 
-# Remove Slack
-Remove-Application -appName "Slack"
 
 # Create desktop shortcuts
 $WshShell = New-Object -ComObject WScript.Shell
