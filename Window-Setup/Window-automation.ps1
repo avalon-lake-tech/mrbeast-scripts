@@ -46,9 +46,7 @@ Remove-Item $imagePath
 
 # Adds App Shortcuts
 # Define download URLs for the applications
-$chromeUrl = "https://dl.google.com/chrome/install/GoogleChromeStandaloneEnterprise64.msi"
 $zoomUrl = "https://zoom.us/client/latest/ZoomInstallerFull.msi"
-$thunderbirdUrl = "https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/91.7.0/win64/en-US/Thunderbird%20Setup%2091.7.0.exe"
 $anydeskUrl = "https://download.anydesk.com/AnyDesk.exe"
 $winfspUrl = "https://github.com/billziss-gh/winfsp/releases/download/winfsp-v1.10.2002/winfsp-1.10.2002.msi"
 $sshfsWinUrl = "https://github.com/billziss-gh/sshfs-win/releases/download/2021.1_Beta2/sshfs-win-2021.1-Beta2.msi"
@@ -91,14 +89,10 @@ function Remove-Application {
     }
 }
 
-# Install Google Chrome
-Install-Application -url $chromeUrl -installPath $installPath
+
 
 # Install Zoom
 Install-Application -url $zoomUrl -installPath $installPath
-
-# Install Thunderbird
-Install-Application -url $thunderbirdUrl -installPath $installPath
 
 # Install AnyDesk
 Install-Application -url $anydeskUrl -installPath $installPath
