@@ -1,5 +1,4 @@
-# Project Title
-
+# Avalon Lake Tech
 
 
 ![Avalon Lake Desktop](https://github.com/avalon-lake-tech/mrbeast-scripts/blob/main/avalonlake-desktop.png?raw=true)
