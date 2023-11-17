@@ -22,6 +22,4 @@ Describe the updates made to the Window Automation script.
 Explain the changes related to mounting the sshfs file in the Linux setup.
 
 
-## Avalon Lake Desktop Image
 
-Include a short summary of the changes made to the Avalon Lake Desktop image.
