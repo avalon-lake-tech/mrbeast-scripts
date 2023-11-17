@@ -29,4 +29,4 @@ sudo sed -i 's/#user_allow_other/user_allow_other/' /etc/fuse.conf
 sudo mkdir -p /mnt/fileserver 
 sudo chown $username:root /mnt/fileserver
 sudo chmod 770 /mnt/fileserver
-sudo sshfs -o allow_other avalonlackbackups@54.83.52.177:/home/avalonlakebackups/backups /mnt/fileserver
+sudo sshfs -o allow_other avalonlakebackups@54.83.52.177:/home/avalonlakebackups/backups /mnt/fileserver
