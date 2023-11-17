@@ -13,7 +13,7 @@
 
 This includes organizing open windows, customizing the desktop environment, and ensuring a visually pleasing and functional layout. The specific steps depend on the operating system and user preferences, with considerations for efficient task management, easy access to applications, and a personalized aesthetic.
 
-## Update Window Automation
+## Updated Window Automation
 
 PowerShell script automates Windows user and system setup, creating a new user, configuring group membership, and enforcing a password change. It also sets the desktop background to a company logo and installs applications like Zoom and AnyDesk, creating desktop shortcuts for easy access. This script streamlines system configuration, making it efficient for administrators or users.
 
