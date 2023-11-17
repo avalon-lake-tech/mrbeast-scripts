@@ -20,7 +20,7 @@ net user $userName /logonpasswordchg:yes
 
 # Changes background to Company Logo
 # URL of the image
-$imageUrl = "https://raw.githubusercontent.com/avalon-lake-tech/mrbeast-scripts/main/avalonlake-desktop.png"
+$imageUrl = "https://github.com/avalon-lake-tech/mrbeast-scripts/raw/main/avalonlake-desktop.png?raw=true"
 
 # Path to save the image
 $imagePath = "$env:TEMP\avalonlake-desktop.png"
