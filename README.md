@@ -8,12 +8,10 @@
 - [Window Setup](#window-setup)
 - [Update Window Automation](#update-window-automation)
 - [Linux Setup](#linux-setup)
-- [README.md](#readme)
-- [Avalon Lake Desktop Image](#avalon-lake-desktop-image)
 
 ## Window Setup
 
-Include information about the Window setup changes.
+Include information about the window setup.
 
 ## Update Window Automation
 
