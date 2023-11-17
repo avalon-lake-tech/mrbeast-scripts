@@ -8,6 +8,7 @@
 - [Window Setup](#window-setup)
 - [Update Window Automation](#update-window-automation)
 - [Linux Setup](#linux-setup)
+- [Linux Automation](Linux-automation)
 
 ## Window Setup
 
@@ -20,6 +21,14 @@ PowerShell script automates Windows user and system setup, creating a new user, 
 ## Linux Setup
 
 This include organizing workspaces, accessing applications easily, and personalizing themes and settings to align with the project's needs and the user's workflow within the Linux environment.
+
+## Linux Automation
+This Bash script automates new user setup on Linux, including default password assignment, background image download, and GNOME desktop configuration. It prompts the user to change their password on the first login and ensures proper file permissions. Customizable options include the default password and background image URL.
+
+
+
+
+
 
 
 
