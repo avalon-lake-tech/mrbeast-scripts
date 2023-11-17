@@ -4,4 +4,4 @@
 
 ## Script Overview
 
-This repositories shows all the script we used in project such Powershell and AWS.
+This repositories shows all the script we used in project such as Powershell and AWS.
